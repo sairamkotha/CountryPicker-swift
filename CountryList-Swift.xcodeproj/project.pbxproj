@@ -7,6 +7,7 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
+		C417589B1CAC0C3600AA8B00 /* CountryCodeViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = C417589A1CAC0C3600AA8B00 /* CountryCodeViewController.swift */; };
 		C442C2871C31BADF0053883C /* AppDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = C442C2861C31BADF0053883C /* AppDelegate.swift */; };
 		C442C2891C31BADF0053883C /* SRCountryPickerController.swift in Sources */ = {isa = PBXBuildFile; fileRef = C442C2881C31BADF0053883C /* SRCountryPickerController.swift */; };
 		C442C28C1C31BADF0053883C /* Main.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = C442C28A1C31BADF0053883C /* Main.storyboard */; };
@@ -18,6 +19,7 @@
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
+		C417589A1CAC0C3600AA8B00 /* CountryCodeViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = CountryCodeViewController.swift; sourceTree = "<group>"; };
 		C442C2831C31BADF0053883C /* CountryList-Swift.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = "CountryList-Swift.app"; sourceTree = BUILT_PRODUCTS_DIR; };
 		C442C2861C31BADF0053883C /* AppDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppDelegate.swift; sourceTree = "<group>"; };
 		C442C2881C31BADF0053883C /* SRCountryPickerController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SRCountryPickerController.swift; sourceTree = "<group>"; };
@@ -63,6 +65,7 @@
 				C442C2861C31BADF0053883C /* AppDelegate.swift */,
 				C442C2981C31BAF90053883C /* CountryPicker.bundle */,
 				C442C29A1C31BB0C0053883C /* countries.json */,
+				C417589A1CAC0C3600AA8B00 /* CountryCodeViewController.swift */,
 				C442C2881C31BADF0053883C /* SRCountryPickerController.swift */,
 				C442C29C1C31C3980053883C /* CountryTableViewCell.swift */,
 				C442C28A1C31BADF0053883C /* Main.storyboard */,
@@ -146,6 +149,7 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				C417589B1CAC0C3600AA8B00 /* CountryCodeViewController.swift in Sources */,
 				C442C29D1C31C3980053883C /* CountryTableViewCell.swift in Sources */,
 				C442C2891C31BADF0053883C /* SRCountryPickerController.swift in Sources */,
 				C442C2871C31BADF0053883C /* AppDelegate.swift in Sources */,

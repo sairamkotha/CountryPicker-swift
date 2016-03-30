@@ -16,12 +16,16 @@ struct Country {
   let country_name : String
 }
 
+protocol CountrySelectedDelegate {
+  func SRcountrySelected(countrySelected country: Country) -> Void
+}
 
 class SRCountryPickerController: UIViewController {
 
   @IBOutlet weak var tableView: UITableView!
   @IBOutlet weak var searchBar: UISearchBar!
   var countries = NSArray()
+  var countryDelegate: CountrySelectedDelegate!
   var countriesFiltered = [Country]()
   var countriesModel = [Country]()
   
@@ -109,6 +113,15 @@ extension SRCountryPickerController: UITableViewDataSource {
     return countries.count
   }
 
+  func tableView(tableView: UITableView, didSelectRowAtIndexPath indexPath: NSIndexPath) {
+    if checkSearchBarActive() {
+      countryDelegate.SRcountrySelected(countrySelected: countriesFiltered[indexPath.row])
+    }else {
+      countryDelegate.SRcountrySelected(countrySelected: countriesModel[indexPath.row])
+    }
+    self.dismissViewControllerAnimated(true, completion: nil)
+  }
+  
 }
 
 extension SRCountryPickerController : UITableViewDelegate {
