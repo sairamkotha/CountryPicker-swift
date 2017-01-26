@@ -24,7 +24,7 @@ class SRCountryPickerController: UIViewController {
 
   @IBOutlet weak var tableView: UITableView!
   @IBOutlet weak var searchBar: UISearchBar!
-  var countries = NSArray()
+    var countries = [[String: String]]()
   var countryDelegate: CountrySelectedDelegate!
   var countriesFiltered = [Country]()
   var countriesModel = [Country]()
@@ -38,14 +38,14 @@ class SRCountryPickerController: UIViewController {
     tableView.delegate = self
     tableView.dataSource = self
     tableView.allowsMultipleSelection = false
-    tableView.registerClass(CountryTableViewCell.self, forCellReuseIdentifier: "cell")
+    tableView.register(CountryTableViewCell.self, forCellReuseIdentifier: "cell")
   }
 
   func jsonSerial() {
-    let data = NSData(contentsOfFile: NSBundle.mainBundle().pathForResource("countries", ofType: "json")!)
+    let data = try? Data(contentsOf: URL(fileURLWithPath: Bundle.main.path(forResource: "countries", ofType: "json")!))
      do {
-     let parsedObject = try NSJSONSerialization.JSONObjectWithData(data!, options: NSJSONReadingOptions.AllowFragments)
-      countries = parsedObject as! NSArray
+     let parsedObject = try JSONSerialization.jsonObject(with: data!, options: JSONSerialization.ReadingOptions.allowFragments)
+      countries = parsedObject as! [[String : String]]
 //      print("country list \(countries)")
      }catch{
       print("not able to parse")
@@ -53,24 +53,24 @@ class SRCountryPickerController: UIViewController {
   }
   
   func collectCountries() {
-    for i in 0 ..< countries.count  {
-      let code = countries[i]["code"] as! String
-      let name = countries[i]["name"] as! String
-      let dailcode = countries[i]["dial_code"] as! String
+    for country in countries  {
+      let code = country["code"] ?? ""
+      let name = country["name"] ?? ""
+      let dailcode = country["dial_code"] ?? ""
       countriesModel.append(Country(country_code:code,dial_code:dailcode, country_name:name))
     }
   }
   
-  func filtercountry(searchText: String) {
+  func filtercountry(_ searchText: String) {
     countriesFiltered = countriesModel.filter({(country ) -> Bool in
-     let value = country.country_name.lowercaseString.containsString(searchText.lowercaseString) || country.country_code.lowercaseString.containsString(searchText.lowercaseString)
+     let value = country.country_name.lowercased().contains(searchText.lowercased()) || country.country_code.lowercased().contains(searchText.lowercased())
       return value
     })
     tableView.reloadData()
   }
   
   func checkSearchBarActive() -> Bool {
-    if searchBar.isFirstResponder() && searchBar.text != "" {
+    if searchBar.isFirstResponder && searchBar.text != "" {
       return true
     }else {
       return false
@@ -85,15 +85,15 @@ class SRCountryPickerController: UIViewController {
 
 extension SRCountryPickerController: UISearchBarDelegate {
   
-  func searchBar(searchBar: UISearchBar, textDidChange searchText: String) {
+  func searchBar(_ searchBar: UISearchBar, textDidChange searchText: String) {
     self.filtercountry(searchText)
   }
   
-  func searchBarSearchButtonClicked(searchBar: UISearchBar) {
+  func searchBarSearchButtonClicked(_ searchBar: UISearchBar) {
     searchBar.resignFirstResponder()
   }
   
-  func searchBarCancelButtonClicked(searchBar: UISearchBar) {
+  func searchBarCancelButtonClicked(_ searchBar: UISearchBar) {
     searchBar.resignFirstResponder()
   }
   
@@ -102,32 +102,32 @@ extension SRCountryPickerController: UISearchBarDelegate {
 
 extension SRCountryPickerController: UITableViewDataSource {
   
-  func numberOfSectionsInTableView(tableView: UITableView) -> Int {
+  func numberOfSections(in tableView: UITableView) -> Int {
     return 1
   }
   
-  func tableView(tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
+  func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
     if checkSearchBarActive() {
       return countriesFiltered.count
     }
     return countries.count
   }
 
-  func tableView(tableView: UITableView, didSelectRowAtIndexPath indexPath: NSIndexPath) {
+  func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
     if checkSearchBarActive() {
       countryDelegate.SRcountrySelected(countrySelected: countriesFiltered[indexPath.row])
     }else {
       countryDelegate.SRcountrySelected(countrySelected: countriesModel[indexPath.row])
     }
-    self.dismissViewControllerAnimated(true, completion: nil)
+    self.dismiss(animated: true, completion: nil)
   }
   
 }
 
 extension SRCountryPickerController : UITableViewDelegate {
   
-  func tableView(tableView: UITableView, cellForRowAtIndexPath indexPath: NSIndexPath) -> UITableViewCell {
-    let cell = tableView.dequeueReusableCellWithIdentifier("cell") as! CountryTableViewCell
+  func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
+    let cell = tableView.dequeueReusableCell(withIdentifier: "cell") as! CountryTableViewCell
     let contry: Country
     if checkSearchBarActive() {
       contry = countriesFiltered[indexPath.row]
@@ -142,7 +142,7 @@ extension SRCountryPickerController : UITableViewDelegate {
     return cell
   }
   
-  func tableView(tableView: UITableView, heightForRowAtIndexPath indexPath: NSIndexPath) -> CGFloat {
+  func tableView(_ tableView: UITableView, heightForRowAt indexPath: IndexPath) -> CGFloat {
     return 50
   }
   

@@ -17,22 +17,22 @@ class CountryCodeViewController: UIViewController {
     super.viewDidLoad()
   
     let pickCountry = UIButton()
-    pickCountry.setTitle("Pick a Country", forState: .Normal)
-    pickCountry.setTitleColor(.blackColor(), forState: .Normal)
+    pickCountry.setTitle("Pick a Country", for: UIControlState())
+    pickCountry.setTitleColor(.black, for: UIControlState())
     pickCountry.frame = CGRect(x: 50, y: 100, width: 200, height: 40)
     view.addSubview(pickCountry)
     
-    pickCountry.addTarget(self, action: #selector(CountryCodeViewController.showCountryViewScreen), forControlEvents: UIControlEvents.TouchUpInside)
+    pickCountry.addTarget(self, action: #selector(CountryCodeViewController.showCountryViewScreen), for: UIControlEvents.touchUpInside)
     
   }
   
   func showCountryViewScreen() {
-    self.performSegueWithIdentifier("countryScreen", sender: self)
+    self.performSegue(withIdentifier: "countryScreen", sender: self)
   }
   
-  override func prepareForSegue(segue: UIStoryboardSegue, sender: AnyObject?) {
+  override func prepare(for segue: UIStoryboardSegue, sender: Any?) {
     if segue.identifier == "countryScreen" {
-      if let control = segue.destinationViewController as? UINavigationController {
+      if let control = segue.destination as? UINavigationController {
         if let contrl = control.topViewController as? SRCountryPickerController {
           contrl.countryDelegate = self
         }
